@@ -1,6 +1,6 @@
 const express = require('express');
 const routes = express.Router();
-const TemplateRouter = require('./template.router');
-routes.use('/template',TemplateRouter);
+const DocumentRouter = require('./document.router');
+routes.use('/api/documents',DocumentRouter);
 
 module.exports = routes;

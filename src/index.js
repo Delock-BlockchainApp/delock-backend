@@ -12,7 +12,7 @@ app.use(cors());
 app.use(express.json());
 
 // Connect to MongoDB
-connectToDb()
+//connectToDb()
 
 // Define your routes here
 const Routes = require('./routes');
