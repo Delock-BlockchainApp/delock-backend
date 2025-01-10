@@ -3,6 +3,8 @@ const cors = require('cors');
 const morgan = require("morgan");
 const dotenv = require('dotenv');
 const connectToDb =require('./config/Connection') 
+const ejs = require('ejs')
+const path = require("path");
 require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 3000;
@@ -15,6 +17,7 @@ app.use(express.json());
 //connectToDb()
 
 // Define your routes here
+app.use("/assets", express.static(path.join(__dirname, "./assets")));
 const Routes = require('./routes');
 app.use('/', Routes);
 
