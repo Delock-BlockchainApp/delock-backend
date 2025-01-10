@@ -55,6 +55,42 @@ const generateAndUploadLicense = async (req) => {
     }
 };
 
+const generateAndUploadPancard = async (req) => {
+    try {
+        const data = req.body; // Pancard data
+
+        const template = fs.readFileSync("src/templates/pancard.ejs", "utf-8");
+        const bufferData = await templateToPdf(template, data);
+        const bufferToStream = (buffer) => {
+            const stream = new Readable();
+            stream.push(buffer);
+            stream.push(null); // Signals end of stream
+            return stream;
+        };
+        const formData = new FormData();
+        formData.append("file", bufferToStream(bufferData), `${data.name}_pancard.pdf`);
+
+        // Step 4: Upload PDF to Pinata using Axios
+        const response = await axios.post(Url, formData, {
+            headers: {
+                Authorization: `Bearer ${jwtToken}`, // Add your JWT token here
+            },
+        });
+
+        const responseData = response.data;
+        console.log("Pinata response:", responseData);
+
+        //const ipfsUrl = `https://gateway.pinata.cloud/ipfs/${responseData.IpfsHash}`;
+        return responseData; // Return the IPFS URL
+    } catch (error) {
+        console.error("Error in generateAndUploadPancard:", error.message);
+        if (error.response) {
+            console.error("Response data:", error.response.data);
+            console.error("Response status:", error.response.status);
+        }
+        throw new Error("An error occurred during PDF generation or upload.");
+    }
+}
 
 module.exports = {
     generateAndUploadLicense,
