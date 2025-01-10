@@ -17,13 +17,13 @@ const templateToPdf = async (template,data) => {
         return pdfBuffer;
 }
 
-const generateAndUploadLicense = async (req) => {
+const generateAndUploadDL = async (req) => {
     try {
         
         const data = req.body; // Driving license data
 
         const template = fs.readFileSync("src/templates/driving_license.ejs", "utf-8");
-        const bufferData = await templateToPdf(data);
+        const bufferData = await templateToPdf(template,data);
         const bufferToStream = (buffer) => {
             const stream = new Readable();
             stream.push(buffer);
@@ -93,5 +93,6 @@ const generateAndUploadPancard = async (req) => {
 }
 
 module.exports = {
-    generateAndUploadLicense,
+    generateAndUploadDL,
+    generateAndUploadPancard,
 };

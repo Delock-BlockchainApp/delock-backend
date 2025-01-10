@@ -1,8 +1,8 @@
-const { generateAndUploadLicense } = require("../services/document.service");
+const { generateAndUploadDL,generateAndUploadPancard } = require("../services/document.service");
 
 const uploadDLTemplate = async (req, res) => {
     try {
-        const ipfsData = await generateAndUploadLicense(req);
+        const ipfsData = await generateAndUploadDL(req);
         return res.status(200).json({ message: "PDF generated and uploaded to Pinata",  ipfsData });
     } catch (error) {
         console.error("Error in uploadDLTemplate:", error.message);

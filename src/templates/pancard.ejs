@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    <title>Driving License</title>
+    <style>
+        .main{
+            width: 600px;
+            height: 750px;
+            border-radius: 30px;
+            background-color:white;
+            display: flex;
+            font-family: poppins;
+            flex-direction: column;
+            align-items: center;
+            margin: auto;
+            margin-top: 100px;
+            padding: 20px;
+            border: #022A51 15px solid;
+        }
+       .top{
+        display: flex;
+        border-radius: 6px;
+        height:125px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+        width: 100%;
+       }
+       .logo{
+              margin: 15px;
+              width: 100px;
+              height: 100px;
+       }
+       .title{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+       }
+       .title-main{
+        font-size: 20px;
+        margin: 0;
+       }
+       .title-sub{
+        font-size: 16px;
+        font-weight: 800;
+        margin: 0;
+       }
+       .content{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height:400px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+        margin: 20px 30px 0px 30px;
+        border-radius: 6px;
+        font-size: 16px;
+       }
+       .details-top{
+        display: flex;
+        height: 55px;
+        justify-content: space-between;
+        margin: 20px;
+        border-bottom: solid rgba(0, 0, 0, 0.5) 1px;
+       }
+       .details{
+        height: 25px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 10px;
+       }
+       .list{
+        justify-content: space-between;
+        margin: 20px 40px 5px 40px;
+        border-bottom: solid rgba(0, 0, 0, 0.3) 1px;
+       }
+       .verify{
+        display: flex;
+        padding: 20px;
+        margin-top: 20px;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+       }
+       .verify-doc{
+        width: 197px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        background-color: #022A51;
+        border-radius: 10px;
+        color: white;
+       }
+       .verify-sign{
+        margin-top: 10px;
+        width: 227px;
+        height: 23px;
+        display: flex;
+        align-items: center;
+        background-color: #022A51;
+        border-radius: 10px;
+        color: white;
+        font-size: 8px;
+        gap: 5px;
+       }
+       .verify-logo{
+        margin-left: 10px;
+        margin-right: 10px;
+       }
+       .verify-text{
+        display: flex;
+        align-items: center;
+        gap: 5px;
+       }
+       .qr-code{
+        width: 200px;
+        height: 150px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+       }
+       .bottom{
+        margin-top:20px ;
+        padding: 0px 20px 0px 20px;
+        font-size: 10px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        border-radius: 6px;
+       }
+       .bottom-text{
+        margin: 0;
+        font-size: 12px;
+       }
+    </style>
+</head>
+<body>
+    <div class="main">
+        <div class="top">
+            <img class="logo" src="http://localhost:3000/assets/ashoka_sthambham.png" alt="ashoka_sthambam">
+            <div class="title">
+                <p class="title-main">INCOME TAX DEPARTMENT</p>
+                <p class="title-sub">Pan Verification Record</p>
+            </div>
+        </div>
+        <div class="content">
+            <div class="details list">
+                <h6>Permanent Account Number </h6><h6 style="font-size: 20px;"><%= pancardNumber %></h6>
+            </div>
+            <div class="details list">
+                <h6>Name</h6><h6><%=  name%></h6>
+            </div>
+            <div class="details list">
+                <h6>Gender </h6><h6><%= gender %></h6>
+            </div>
+            <div class="details list">
+                <h6>Verified On </h6><h6><%= signDate %></h6>
+            </div>
+            
+        <div style="display: flex;padding: 20px;"><div class="verify">
+            <div class="verify-doc">
+                <img class="verify-logo"  src="http://localhost:3000/assets/clipboard-check.svg" alt="icon">
+              <div class="verify-text"><h5>Verified</h5><p style="font-size: 10px;">by delock</p></div></div>
+            <div class="verify-sign">
+               <img class="verify-logo" src="http://localhost:3000/assets/patch-check-fill.svg" alt="doc">
+              <div class="verify-text"><p>Digitally signed on </p><p><%= signDate %></p></div></div>
+        </div>
+        <div class="qr-code"><img src="http://localhost:3000/assets/qr-code.svg" alt="qr"></div>
+    </div>
+        
+    </div>
+    <div class="bottom">
+            <h4>Note :</h4>
+            <p>1. This PAN data is verified by DigiLocker (https://digilocker.gov.in) as per data provided by the issuing authority, Income Tax Department, Govt. of India.</p>
+            <p>2. This digitally signed verification document is valid as per the IT Act 2000 when used electronically.</p>
+        </div>
+    
+</body>
+</html>
