@@ -30,8 +30,19 @@ const addDepartment = async (req, res) => {
     }
 };
 
+const getDepartment = async (req, res) => {
+    try {
+        const departmentData = await getDepartmentDetails();
+        return res.status(200).json({ departmentData });
+    } catch (error) {
+        console.error("Error in getDepartment:", error.message);
+        return res.status(500).json({ error: "An error occurred in the controller.", details: error.message });
+    }
+};
+
 module.exports = {
     uploadDLTemplate,
     uploadPancardTemplate,
-    addDepartment
+    addDepartment,
+    getDepartment
 };
