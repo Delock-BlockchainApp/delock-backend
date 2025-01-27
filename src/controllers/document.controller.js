@@ -1,4 +1,4 @@
-const { generateAndUploadDL,generateAndUploadPancard,addDepartmentDetails } = require("../services/document.service");
+const { generateAndUploadDL,generateAndUploadPancard,addDepartmentDetails,getDepartmentDetails } = require("../services/document.service");
 
 const uploadDLTemplate = async (req, res) => {
     try {
