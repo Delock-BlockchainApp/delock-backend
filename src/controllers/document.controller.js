@@ -1,4 +1,4 @@
-const { generateAndUploadDL,generateAndUploadPancard } = require("../services/document.service");
+const { generateAndUploadDL,generateAndUploadPancard,addDepartmentDetails } = require("../services/document.service");
 
 const uploadDLTemplate = async (req, res) => {
     try {
@@ -19,7 +19,19 @@ const uploadPancardTemplate = async (req, res) => {
     }
 };
 
+const addDepartment = async (req, res) => {
+    try {
+        const data = req.body;
+        const departmentData = await addDepartmentDetails(data);
+        return res.status(201).json({ message: "Department added successfully" });
+    } catch (error) {
+        console.error("Error in addDepartment:", error.message);
+        return res.status(500).json({ error: "An error occurred in the controller.", details: error.message });
+    }
+};
+
 module.exports = {
     uploadDLTemplate,
     uploadPancardTemplate,
+    addDepartment
 };

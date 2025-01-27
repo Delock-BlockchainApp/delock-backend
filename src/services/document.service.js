@@ -5,6 +5,7 @@ const axios = require("axios");
 const FormData = require("form-data");
 const { Readable } = require("stream");
 const jwtToken = process.env.PINATA_JWT_TOKEN; // Your Pinata JWT token
+const Department = require("../models/department.model");
 const Url = "https://api.pinata.cloud/pinning/pinFileToIPFS"; // Pinata API URL
 
 const templateToPdf = async (template,data) => {
@@ -92,7 +93,19 @@ const generateAndUploadPancard = async (req) => {
     }
 }
 
+    const addDepartmentDetails = async (data) => {
+        try {
+            const department = new Department(data);
+            await department.save();
+            return department;
+        } catch (error) {   
+            console.error("Error in addDepartmentDetails:", error.message);
+            throw new Error("An error occurred while adding the department.");
+        }
+       
+    }
 module.exports = {
     generateAndUploadDL,
     generateAndUploadPancard,
+    addDepartmentDetails
 };
