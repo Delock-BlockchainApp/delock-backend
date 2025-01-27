@@ -14,7 +14,7 @@ app.use(cors());
 app.use(express.json());
 
 // Connect to MongoDB
-//connectToDb()
+connectToDb()
 
 // Define your routes here
 app.use("/assets", express.static(path.join(__dirname, "./assets")));

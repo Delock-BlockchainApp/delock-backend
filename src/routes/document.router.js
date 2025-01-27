@@ -4,5 +4,5 @@ const {uploadDLTemplate,uploadPancardTemplate,addDepartment} = require('../contr
 
 router.post('/generate/driving_license', uploadDLTemplate);
 router.post('/generate/pancard', uploadPancardTemplate);
-router.post('/addDepartment',addDepartment)
+router.post('/add_department',addDepartment)
 module.exports = router;

@@ -7,7 +7,6 @@ const departmentSchema = new mongoose.Schema({
       },
     issued_state:{
         type: String,
-        required: true
     },
     department_description:{
         type: String,
