@@ -104,9 +104,26 @@ const generateAndUploadPancard = async (req) => {
         }
        
     }
-    const getDepartmentDetails = async () => {
+    const getAllDepartmentDetails = async () => {
         try {
             const departments = await Department.find();
+            return departments;
+        } catch (error) {
+            console.error("Error in getDepartmentDetails:", error.message);
+            throw new Error("An error occurred while fetching the departments.");
+        }
+    }
+
+    const getDepartmentDetails = async (searchkey) => {
+        try {
+            const departments = await Department.find({
+                $or: [
+                    { name: { $regex: searchkey, $options: "i" } },
+                    { issued_state: { $regex: searchkey, $options: "i" } },
+                    { department_type: { $regex: searchkey, $options: "i" } },
+                    { department_code: { $regex: searchkey, $options: "i" } }
+                ]
+            });
             return departments;
         } catch (error) {
             console.error("Error in getDepartmentDetails:", error.message);
@@ -117,5 +134,6 @@ module.exports = {
     generateAndUploadDL,
     generateAndUploadPancard,
     addDepartmentDetails,
+    getAllDepartmentDetails,
     getDepartmentDetails
 };
