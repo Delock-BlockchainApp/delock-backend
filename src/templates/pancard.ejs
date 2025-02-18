@@ -6,7 +6,7 @@
     <style>
         .main{
             width: 600px;
-            height: 810px;
+            height: 750px;
             border-radius: 30px;
             background-color:white;
             display: flex;
@@ -50,7 +50,7 @@
         display: flex;
         flex-direction: column;
         width: 100%;
-        height:480px;
+        height:400px;
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
         margin: 20px 30px 0px 30px;
         border-radius: 6px;
@@ -67,11 +67,12 @@
         height: 25px;
         display: flex;
         align-items: center;
-        gap: 5px;
+        gap: 10px;
+        margin-top: 10px;
        }
        .list{
         justify-content: space-between;
-        margin: 5px 40px 5px 40px;
+        margin: 20px 40px 5px 40px;
         border-bottom: solid rgba(0, 0, 0, 0.3) 1px;
        }
        .verify{
@@ -138,38 +139,24 @@
         <div class="top">
             <img class="logo" src="http://localhost:3000/assets/ashoka_sthambham.png" alt="ashoka_sthambam">
             <div class="title">
-                <p class="title-main">UNION OF INDIA DRIVING LICENSE</p>
-                <p class="title-sub">Issuing Authority : <%= authority %></p>
+                <p class="title-main">INCOME TAX DEPARTMENT</p>
+                <p class="title-sub">Pan Verification Record</p>
             </div>
         </div>
         <div class="content">
-            <div class="details-top">
-                <div>
-                    <div class="details"><h6>License No </h6><h6 style="font-size: 16px;"><%= licenseNumber  %></h6></div>
-                    <div class="details"><h6>Authorization to Drive </h6><h6><%= vehicle %></h6></div>
-                </div>
-                <div>
-                    <div class="details"><h6>Date of Issue  </h6><h6><%= issueDate %></h6></div>
-                     <div class="details"><h6>Date of Expiry  </h6><h6><%= expiryDate %></h6></div>
-
-                </div>
-                
+            <div class="details list">
+                <h6>Permanent Account Number </h6><h6 style="font-size: 20px;"><%= pancardNumber %></h6>
             </div>
             <div class="details list">
-                <h6>Name </h6><h6><%= name %></h6>
+                <h6>Name</h6><h6><%=  name%></h6>
             </div>
             <div class="details list">
-                <h6>S/W/D </h6><h6><%= guardian %></h6>
+                <h6>Gender </h6><h6><%= gender %></h6>
             </div>
             <div class="details list">
-                <h6>DOB </h6><h6><%= dob %></h6>
+                <h6>Verified On </h6><h6><%= signDate %></h6>
             </div>
-            <div class="details list">
-                <h6>Blood Group </h6><h6><%= blood_group %></h6>
-            </div>
-            <div class="details list" style="height:50px;">
-                <h6>Address </h6><h6 style="width: 150px ;"><%= address %></h6>
-        </div>
+            
         <div style="display: flex;padding: 20px;"><div class="verify">
             <div class="verify-doc">
                 <img class="verify-logo"  src="http://localhost:3000/assets/clipboard-check.svg" alt="icon">
@@ -184,8 +171,8 @@
     </div>
     <div class="bottom">
             <h4>Note :</h4>
-            <p>1. This is a digital certificate. The format of this certificate may differ from document issued by the concerned department.</p>
-            <p>2. This digitally signed document is legally valid as per the IT Act 2000 when used electronically.</p>
+            <p>1. This PAN data is verified by DigiLocker (https://digilocker.gov.in) as per data provided by the issuing authority, Income Tax Department, Govt. of India.</p>
+            <p>2. This digitally signed verification document is valid as per the IT Act 2000 when used electronically.</p>
         </div>
     
 </body>

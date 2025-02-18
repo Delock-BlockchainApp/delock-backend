@@ -4,34 +4,35 @@ const puppeteer = require("puppeteer");
 const axios = require("axios");
 const FormData = require("form-data");
 const { Readable } = require("stream");
+const jwtToken = process.env.PINATA_JWT_TOKEN; // Your Pinata JWT token
+const Department = require("../models/documents.model");
+const Url = "https://api.pinata.cloud/pinning/pinFileToIPFS"; // Pinata API URL
 
-const generateAndUploadLicense = async (req) => {
-    try {
-        const jwtToken = process.env.PINATA_JWT_TOKEN; // Your Pinata JWT token
-        const Url = "https://api.pinata.cloud/pinning/pinFileToIPFS";
-        const data = req.body; // Driving license data
-
-        // Step 1: Render EJS Template
-        const template = fs.readFileSync("src/templates/driving_license.ejs", "utf-8");
-        const html = ejs.render(template, data);
-
-        // Step 2: Convert HTML to PDF using Puppeteer
+const templateToPdf = async (template,data) => {
+    const html = ejs.render(template, data);
         const browser = await puppeteer.launch();
         const page = await browser.newPage();
         await page.setContent(html);
-        const pdfBuffer = await page.pdf({ format: "A4" });
+        const pdfBuffer = await page.pdf({ format: "A4" ,printBackground: true});
         await browser.close();
+        return pdfBuffer;
+}
 
+const generateAndUploadDL = async (req) => {
+    try {
+        
+        const data = req.body; // Driving license data
+
+        const template = fs.readFileSync("src/templates/driving_license.ejs", "utf-8");
+        const bufferData = await templateToPdf(template,data);
         const bufferToStream = (buffer) => {
             const stream = new Readable();
             stream.push(buffer);
             stream.push(null); // Signals end of stream
             return stream;
         };
-        
-        // Step 3: Prepare FormData for Upload
         const formData = new FormData();
-        formData.append("file", bufferToStream(pdfBuffer), "driving_license.pdf");
+        formData.append("file", bufferToStream(bufferData), `${data.name}_driving_license.pdf`);
 
         // Step 4: Upload PDF to Pinata using Axios
         const response = await axios.post(Url, formData, {
@@ -40,12 +41,11 @@ const generateAndUploadLicense = async (req) => {
             },
         });
 
-        // Step 5: Check response and parse data
         const responseData = response.data;
         console.log("Pinata response:", responseData);
 
-        const ipfsUrl = `https://gateway.pinata.cloud/ipfs/${responseData.IpfsHash}`;
-        return ipfsUrl; // Return the IPFS URL
+        //const ipfsUrl = `https://gateway.pinata.cloud/ipfs/${responseData.IpfsHash}`;
+        return responseData; // Return the IPFS URL
     } catch (error) {
         console.error("Error in generateAndUploadLicense:", error.message);
         if (error.response) {
@@ -56,6 +56,84 @@ const generateAndUploadLicense = async (req) => {
     }
 };
 
+const generateAndUploadPancard = async (req) => {
+    try {
+        const data = req.body; // Pancard data
+
+        const template = fs.readFileSync("src/templates/pancard.ejs", "utf-8");
+        const bufferData = await templateToPdf(template, data);
+        const bufferToStream = (buffer) => {
+            const stream = new Readable();
+            stream.push(buffer);
+            stream.push(null); // Signals end of stream
+            return stream;
+        };
+        const formData = new FormData();
+        formData.append("file", bufferToStream(bufferData), `${data.name}_pancard.pdf`);
+
+        // Step 4: Upload PDF to Pinata using Axios
+        const response = await axios.post(Url, formData, {
+            headers: {
+                Authorization: `Bearer ${jwtToken}`, // Add your JWT token here
+            },
+        });
+
+        const responseData = response.data;
+        console.log("Pinata response:", responseData);
+
+        //const ipfsUrl = `https://gateway.pinata.cloud/ipfs/${responseData.IpfsHash}`;
+        return responseData; // Return the IPFS URL
+    } catch (error) {
+        console.error("Error in generateAndUploadPancard:", error.message);
+        if (error.response) {
+            console.error("Response data:", error.response.data);
+            console.error("Response status:", error.response.status);
+        }
+        throw new Error("An error occurred during PDF generation or upload.");
+    }
+}
+
+    const addDepartmentDetails = async (data) => {
+        try {
+            const department = new Department(data);
+            await department.save();
+            return department;
+        } catch (error) {   
+            console.error("Error in addDepartmentDetails:", error.message);
+            throw new Error("An error occurred while adding the department.");
+        }
+       
+    }
+    const getAllDepartmentDetails = async () => {
+        try {
+            const departments = await Department.find();
+            return departments;
+        } catch (error) {
+            console.error("Error in getDepartmentDetails:", error.message);
+            throw new Error("An error occurred while fetching the departments.");
+        }
+    }
+
+    const getDepartmentDetails = async (searchkey) => {
+        try {
+            const departments = await Department.find({
+                $or: [
+                    { name: { $regex: searchkey, $options: "i" } },
+                    { issued_state: { $regex: searchkey, $options: "i" } },
+                    { department_type: { $regex: searchkey, $options: "i" } },
+                    { department_code: { $regex: searchkey, $options: "i" } }
+                ]
+            });
+            return departments;
+        } catch (error) {
+            console.error("Error in getDepartmentDetails:", error.message);
+            throw new Error("An error occurred while fetching the departments.");
+        }
+    }
 module.exports = {
-    generateAndUploadLicense,
+    generateAndUploadDL,
+    generateAndUploadPancard,
+    addDepartmentDetails,
+    getAllDepartmentDetails,
+    getDepartmentDetails
 };
