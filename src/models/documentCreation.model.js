@@ -1,14 +1,12 @@
 const mongoose = require('mongoose');
+const { schema } = require('./user.model');
+const { json } = require('body-parser');
 const documentCreationSchema = new mongoose.Schema({
     department_code: {
         type: String,
         required: true 
       },
-    document_code:{
-        type: String,
-        required: true
-    },
-    document_code:{
+    document_id:{
         type: String,
         required: true
     },
@@ -16,7 +14,12 @@ const documentCreationSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    form_schema:{
+        type: Object,
+        required: true
+    },
     });
+
       
-const User = mongoose.model('user', userSchema);
-module.exports = User;
+const DocumentSchema = mongoose.model('documentschema', documentCreationSchema);
+module.exports =  DocumentSchema;

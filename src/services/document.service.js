@@ -97,8 +97,5 @@ const generateAndUploadPancard = async (req) => {
 module.exports = {
     generateAndUploadDL,
     generateAndUploadPancard,
-    addDepartmentDetails,
-    getAllDepartmentDetails,
-    getDepartmentDetails,
     
 };
