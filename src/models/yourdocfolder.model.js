@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const yourFolderSchema = new mongoose.Schema({
+const yourdocFolderSchema = new mongoose.Schema({
     user_id: {
         type: String,
         required: true 
@@ -12,5 +12,5 @@ const yourFolderSchema = new mongoose.Schema({
 });
 
       
-const YourFolderSchema = mongoose.model('yourfolder', yourFolderSchema);
-module.exports =  YourFolderSchema;
+const YourdocFolderSchema = mongoose.model('yourdocfolder', yourdocFolderSchema);
+module.exports =  YourdocFolderSchema;

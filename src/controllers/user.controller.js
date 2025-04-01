@@ -1,5 +1,5 @@
 
-const {registerUserDetails,registerUserCredentialDetails} = require("../services/user.service");
+const {registerUserDetails,registerUserCredentialDetails,registerYourdocFolderDetails} = require("../services/user.service");
 
 const registerUser = async (req, res) => {
     try {
@@ -23,7 +23,19 @@ const registerUserCredentials = async (req, res) => {
     }
 }
 
+const registerYourdocFolder = async (req, res) => {
+    try {
+        const data = req.body;
+        const user = await registerYourdocFolderDetails(data);
+        return res.status(201).json({ message: "Yourdoc folder registered successfully" });
+    } catch (error) {
+        console.error("Error in registerYourdocFolder:", error.message);
+        return res.status(500).json({ error: "An error occurred in the controller.", details: error.message });
+    }
+}
+
 module.exports = {
     registerUser,
-    registerUserCredentials
+    registerUserCredentials,
+    registerYourdocFolder
 }
