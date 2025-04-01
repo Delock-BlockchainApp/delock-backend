@@ -1,5 +1,8 @@
 
-const {uploadDLTemplate,uploadPancardTemplate,addDepartment,getAllDepartment,getDepartment} = require('../controllers/document.controller');
+const {uploadDLTemplate,uploadPancardTemplate} = require('../controllers/document.controller');
+
+const express = require('express');
+const router = express.Router();
 
 router.post('/generate/driving_license', uploadDLTemplate);
 router.post('/generate/pancard', uploadPancardTemplate);
