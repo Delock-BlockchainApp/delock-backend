@@ -4,7 +4,8 @@ const {uploadDLTemplate,uploadPancardTemplate,addDepartment,getAllDepartment,get
 
 router.post('/generate/driving_license', uploadDLTemplate);
 router.post('/generate/pancard', uploadPancardTemplate);
-router.post('/add_department',addDepartment);
-router.get('/get_all_department',getAllDepartment);
-router.get('/get_department',getDepartment);
+router.post('/department',addDepartment);
+router.get('/department/all',getAllDepartment);
+router.get('/department',getDepartment);
+
 module.exports = router;
