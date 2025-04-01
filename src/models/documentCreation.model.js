@@ -1,6 +1,4 @@
 const mongoose = require('mongoose');
-const { schema } = require('./user.model');
-const { json } = require('body-parser');
 const documentCreationSchema = new mongoose.Schema({
     department_code: {
         type: String,
