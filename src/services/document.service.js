@@ -5,7 +5,6 @@ const axios = require("axios");
 const FormData = require("form-data");
 const { Readable } = require("stream");
 const jwtToken = process.env.PINATA_JWT_TOKEN; // Your Pinata JWT token
-const Department = require("../models/documents.model");
 const Url = "https://api.pinata.cloud/pinning/pinFileToIPFS"; // Pinata API URL
 
 const templateToPdf = async (template,data) => {
@@ -93,47 +92,10 @@ const generateAndUploadPancard = async (req) => {
     }
 }
 
-    const addDepartmentDetails = async (data) => {
-        try {
-            const department = new Department(data);
-            await department.save();
-            return department;
-        } catch (error) {   
-            console.error("Error in addDepartmentDetails:", error.message);
-            throw new Error("An error occurred while adding the department.");
-        }
-       
-    }
-    const getAllDepartmentDetails = async () => {
-        try {
-            const departments = await Department.find();
-            return departments;
-        } catch (error) {
-            console.error("Error in getDepartmentDetails:", error.message);
-            throw new Error("An error occurred while fetching the departments.");
-        }
-    }
+    
 
-    const getDepartmentDetails = async (searchkey) => {
-        try {
-            const departments = await Department.find({
-                $or: [
-                    { name: { $regex: searchkey, $options: "i" } },
-                    { issued_state: { $regex: searchkey, $options: "i" } },
-                    { department_type: { $regex: searchkey, $options: "i" } },
-                    { department_code: { $regex: searchkey, $options: "i" } }
-                ]
-            });
-            return departments;
-        } catch (error) {
-            console.error("Error in getDepartmentDetails:", error.message);
-            throw new Error("An error occurred while fetching the departments.");
-        }
-    }
 module.exports = {
     generateAndUploadDL,
     generateAndUploadPancard,
-    addDepartmentDetails,
-    getAllDepartmentDetails,
-    getDepartmentDetails
+    
 };
