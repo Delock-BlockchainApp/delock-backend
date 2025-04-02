@@ -1,9 +1,11 @@
 const mongoose = require('mongoose');
 const ipfsCredentialSchema = new mongoose.Schema({
     user_id: {
-        type: String,
-        required: true 
-      },
+        type: mongoose.Schema.Types.ObjectId,  
+        ref: 'User', 
+        required: true ,
+        unique: true
+    },
     domain:{
         type: String,
         required: true

@@ -3,6 +3,7 @@ const Credential = require("../models/ipfscredentials.model");
 const YourdocFolder= require("../models/yourdocfolder.model");
 const YourdocDocument = require("../models/yourdocument.model");
 
+
 const registerUserDetails = async (data) => {
     try {
         const user = new User(data);
@@ -49,12 +50,36 @@ const registerYourdocDocumentDetails = async (data) => {
 
 const getUserCredentialDetails = async (userId) => {
     try {
-        const credentials = await Credential.findOne({ user_id: userId });
-        
-        return credentials;
+        const existingCredential = await Credential.findOne({ user_id: userId });
+        if (existingCredential) {
+            return existingCredential;
+        }
+
+
     } catch (error) {
         console.error("Error in getUserCredentialDetails:", error.message);
         throw new Error("An error occurred while fetching the user credentials.");
+    }
+}
+
+
+const getAllYourdocFolderDetails = async (userId) => {
+    try {
+        const folders = await YourdocFolder.find({ user_id: userId });
+        return folders;
+    } catch (error) {
+        console.error("Error in getAllYourdocFolderDetails:", error.message);
+        throw new Error("An error occurred while fetching the Yourdoc folders.");
+    }
+}
+
+const getAllYourdocDocumentsDetails = async (folderId) => {
+    try {
+        const documents = await YourdocDocument.find({ folder_id: folderId });
+        return documents;
+    } catch (error) {
+        console.error("Error in getAllYourdocDocumentsDetails:", error.message);
+        throw new Error("An error occurred while fetching the Yourdoc documents.");
     }
 }
 
@@ -64,4 +89,6 @@ module.exports = {
     registerYourdocFolderDetails,
     registerYourdocDocumentDetails,
     getUserCredentialDetails,
+    getAllYourdocFolderDetails,
+    getAllYourdocDocumentsDetails
 }
