@@ -110,9 +110,20 @@ const addDocumentSchemaDetails = async (data) => {
     }
 }  
 
+const getDocumentSchemaDetails = async (documentId) => {
+    try {
+        const documentSchema = await DocumentSchema.findOne({ document_id: documentId });
+        return documentSchema;
+    } catch (error) {
+        console.error("Error in getDocumentSchemaDetails:", error.message);
+        throw new Error("An error occurred while retrieving document schema details.");
+    }
+}
+
 module.exports = {
     generateAndUploadDL,
     generateAndUploadPancard,
     addDocumentSchemaDetails,
+    getDocumentSchemaDetails
     
 };

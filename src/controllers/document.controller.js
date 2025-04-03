@@ -1,4 +1,4 @@
-const { generateAndUploadDL,generateAndUploadPancard,addDocumentSchemaDetails } = require("../services/document.service");
+const { generateAndUploadDL,generateAndUploadPancard,addDocumentSchemaDetails,getDocumentSchemaDetails } = require("../services/document.service");
 
 const uploadDLTemplate = async (req, res) => {
     try {
@@ -33,8 +33,27 @@ const registerDocumentSchema = async (req, res) => {
     }
 };
 
+const getDocumentSchema = async (req, res) => {
+    try{
+        const documentId= req.query.documentId;
+        const documentSchema = await getDocumentSchemaDetails(documentId);
+        if (!documentId) {
+            return res.status(400).json({ error: "Document ID is required." });
+        }
+        if (!documentSchema) {
+            return res.status(404).json({ error: "No document schema found." });
+        }
+        return res.status(200).json({ message: "Document schema retrieved successfully", documentSchema });
+    }
+    catch (error) {
+        console.error("Error in getDocumentSchema:", error.message);
+        return res.status(500).json({ error: "An error occurred in the controller.", details: error.message });
+    }
+}
+
 module.exports = {
     uploadDLTemplate,
     uploadPancardTemplate,
     registerDocumentSchema,
+    getDocumentSchema
 };
