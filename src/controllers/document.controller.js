@@ -1,4 +1,4 @@
-const { generateAndUploadDL,generateAndUploadPancard,addDepartmentDetails,getDepartmentDetails,getAllDepartmentDetails } = require("../services/document.service");
+const { generateAndUploadDL,generateAndUploadPancard,addDocumentSchemaDetails } = require("../services/document.service");
 
 const uploadDLTemplate = async (req, res) => {
     try {
@@ -19,8 +19,22 @@ const uploadPancardTemplate = async (req, res) => {
     }
 };
 
+const registerDocumentSchema = async (req, res) => {
+    try {
+        // console.log("Request body:", req.body);
+        const result = await addDocumentSchemaDetails(req.body);
+        if (!result) {
+            return res.status(400).json({ error: "Failed to register document schema." });
+        }
+        return res.status(200).json({ message: "Document schema registered successfully", result });
+    } catch (error) {
+        console.error("Error in registerDocumentSchema:", error.message);
+        return res.status(500).json({ error: "An error occurred in the controller.", details: error.message });
+    }
+};
 
 module.exports = {
     uploadDLTemplate,
-    uploadPancardTemplate
+    uploadPancardTemplate,
+    registerDocumentSchema,
 };

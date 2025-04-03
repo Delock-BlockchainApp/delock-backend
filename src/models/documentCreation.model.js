@@ -12,7 +12,7 @@ const documentCreationSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    form_schema:{
+    document_schema:{
         type: Object,
         required: true
     },
