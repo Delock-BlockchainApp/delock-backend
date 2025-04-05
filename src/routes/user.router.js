@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const {registerUser,registerUserCredentials,registerYourdocFolder,registerYourdocDocument,getUserCredentials,getAllYourdocFolder,getAllYourdocDocuments} = require('../controllers/user.controller');
-const { get } = require('mongoose');
+const {registerUser,registerUserCredentials,registerYourdocFolder,registerYourdocDocument,getUserCredentials,getAllYourdocFolder,getAllYourdocDocuments,getUser} = require('../controllers/user.controller');
 
 router.post('/register',registerUser);
+router.route('/').get(getUser);
 router.route('/credential').post(registerUserCredentials)
     .get(getUserCredentials);
 router.route('/yourdoc/folder').post(registerYourdocFolder)

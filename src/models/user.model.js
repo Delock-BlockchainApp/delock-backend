@@ -10,8 +10,9 @@ const userSchema = new mongoose.Schema({
     },
     wallet_address:{
         type: String,
-        required: true
-    }
+        required: true,
+        unique: true
+    },
     });
       
 const User = mongoose.model('user', userSchema);

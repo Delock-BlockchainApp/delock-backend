@@ -82,7 +82,16 @@ const getAllYourdocDocumentsDetails = async (folderId) => {
         throw new Error("An error occurred while fetching the Yourdoc documents.");
     }
 }
-
+const getUserDetails = async (address) => {
+    try{
+        const user = await User.findOne({ wallet_address: address });
+        return user;    
+        } 
+    catch (error) {
+        console.error("Error in getUserDetails:", error.message);
+        throw new Error("An error occurred while fetching the user details.");
+    }  
+}
 module.exports = {
     registerUserDetails,
     registerUserCredentialDetails,
@@ -90,5 +99,6 @@ module.exports = {
     registerYourdocDocumentDetails,
     getUserCredentialDetails,
     getAllYourdocFolderDetails,
-    getAllYourdocDocumentsDetails
+    getAllYourdocDocumentsDetails,
+    getUserDetails
 }
