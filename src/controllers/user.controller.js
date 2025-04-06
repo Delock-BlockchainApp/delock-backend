@@ -1,5 +1,5 @@
 
-const {registerUserDetails,registerUserCredentialDetails,registerYourdocFolderDetails,registerYourdocDocumentDetails,getUserCredentialDetails, getAllYourdocFolderDetails,getAllYourdocDocumentsDetails,getUserDetails} = require("../services/user.service");
+const {registerUserDetails,registerUserCredentialDetails,registerYourdocFolderDetails,registerYourdocDocumentDetails,getUserCredentialDetails, getAllYourdocFolderDetails,getAllYourdocDocumentsDetails,getUserDetails,uploadToPinata} = require("../services/user.service");
 
 const registerUser = async (req, res) => {
     try {
@@ -15,6 +15,9 @@ const registerUser = async (req, res) => {
 const registerUserCredentials = async (req, res) => {
     try {
         const data = req.body;
+        if (!data.user_id) {
+            return res.status(400).json({ message: "user_id is required" });
+        }
         const user = await registerUserCredentialDetails(data);
         return res.status(201).json({ message: "User credentials registered successfully" });
     } catch (error) {
@@ -36,14 +39,38 @@ const registerYourdocFolder = async (req, res) => {
 
 const registerYourdocDocument = async (req, res) => {
     try {
-        const data = req.body;
-        const user = await registerYourdocDocumentDetails(data);
-        return res.status(201).json({ message: "Yourdoc document registered successfully" });
-    } catch (error) {
-        console.error("Error in registerYourdocDocument:", error.message);
-        return res.status(500).json({ error: "An error occurred in the controller.", details: error.message });
+      const folderId = req.params.folderId;
+      const { document_name, user_id } = req.body;
+  
+      if (!folderId) {
+        return res.status(400).json({ message: "folderId is required" });
+      }
+      if (!req.body || !req.file || !document_name || !user_id) {
+        return res.status(400).json({
+          message: "file, document_name, and user_id are required.",
+        });
     }
-}
+    const ipfsHash=await uploadToPinata(req.file,document_name);
+    if (!ipfsHash) {
+        return res.status(500).json({ message: "Failed to upload file to IPFS" });
+    }
+    const document_hash = ipfsHash.IpfsHash;
+    
+    const result = await registerYourdocDocumentDetails({...req.body, folder_id:folderId, document_hash});
+    
+      return res.status(201).json({
+        message: "Yourdoc document registered successfully",
+        result,
+      });
+    } catch (error) {
+      console.error("Error in registerYourdocDocument:", error.message);
+      return res.status(500).json({
+        error: "An error occurred in the controller.",
+        details: error.message,
+      });
+    }
+  };
+  
 
 const getUserCredentials = async (req, res) => {
     try {
@@ -52,7 +79,7 @@ const getUserCredentials = async (req, res) => {
         const credentials = await getUserCredentialDetails(userId);
         // console.log("credentials",credentials)
         if (credentials) {
-            return res.status(200).json({ credentials });
+            return res.status(200).json( credentials );
         } else {
             return res.status(404).json({ message: "User credentials not found" });
         }
@@ -69,7 +96,7 @@ const getAllYourdocFolder = async (req, res) => {
         
         const folders = await getAllYourdocFolderDetails(userId);
         if (folders) {
-            return res.status(200).json({ folders });
+            return res.status(200).json( folders );
         } else {
             return res.status(404).json({ message: "Yourdoc folder not found" });
         }
@@ -81,10 +108,10 @@ const getAllYourdocFolder = async (req, res) => {
 
 const getAllYourdocDocuments = async (req, res) => {
     try {
-        const folderId = req.query.folderId;
+        const folderId = req.params.folderId;
         const documents = await getAllYourdocDocumentsDetails(folderId);
         if (documents) {
-            return res.status(200).json({ documents });
+            return res.status(200).json(documents );
         } else {
             return res.status(404).json({ message: "Yourdoc document not found" });
         }

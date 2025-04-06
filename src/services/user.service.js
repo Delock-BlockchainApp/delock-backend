@@ -2,7 +2,10 @@ const User = require("../models/user.model");
 const Credential = require("../models/ipfscredentials.model");
 const YourdocFolder= require("../models/yourdocfolder.model");
 const YourdocDocument = require("../models/yourdocument.model");
-
+const FormData = require("form-data");
+const PINATA_URL = process.env.PINATA_URL; // Pinata API URL
+const jwtToken = process.env.PINATA_JWT_TOKEN; // Your Pinata JWT token
+const axios = require("axios");
 
 const registerUserDetails = async (data) => {
     try {
@@ -17,14 +20,17 @@ const registerUserDetails = async (data) => {
 
 const registerUserCredentialDetails = async (data) => {
     try {
-        const user = new Credential(data);
-        await user.save();
+        const user = await Credential.findOneAndUpdate(
+            { user_id: data.user_id }, // Search criteria
+            data, // Data to update or insert
+            { new: true, upsert: true } // Options: return the updated document and create if not found
+        );
         return user;
     } catch (error) {
         console.error("Error in registerUserCredentialDetails:", error.message);
-        throw new Error("An error occurred while registering the user credentials.");
+        throw new Error("An error occurred while registering or updating the user credentials.");
     }
-}
+};
 
 const registerYourdocFolderDetails = async (data) => {
     try {
@@ -39,6 +45,7 @@ const registerYourdocFolderDetails = async (data) => {
 
 const registerYourdocDocumentDetails = async (data) => {
     try {
+        console.log("data",data)
         const user = new YourdocDocument(data);
         await user.save();
         return user;
@@ -54,7 +61,6 @@ const getUserCredentialDetails = async (userId) => {
         if (existingCredential) {
             return existingCredential;
         }
-
 
     } catch (error) {
         console.error("Error in getUserCredentialDetails:", error.message);
@@ -92,6 +98,28 @@ const getUserDetails = async (address) => {
         throw new Error("An error occurred while fetching the user details.");
     }  
 }
+const fs = require("fs");
+const { console } = require("inspector");
+const uploadToPinata = async (file,filename) => {
+    try {
+       
+        const formData = new FormData();
+        formData.append("file", fs.createReadStream(file.path),filename);
+
+        const response = await axios.post(PINATA_URL, formData, {
+            headers: {
+                ...formData.getHeaders(),
+                Authorization: `Bearer ${jwtToken}`,
+            },
+        });
+        fs.unlinkSync(file.path);
+        return response.data;
+    } catch (error) {
+        console.error("Error uploading to Pinata:", error.message);
+        throw new Error("An error occurred while uploading to Pinata.");
+    }
+}
+
 module.exports = {
     registerUserDetails,
     registerUserCredentialDetails,
@@ -100,5 +128,6 @@ module.exports = {
     getUserCredentialDetails,
     getAllYourdocFolderDetails,
     getAllYourdocDocumentsDetails,
-    getUserDetails
+    getUserDetails,
+    uploadToPinata,
 }
