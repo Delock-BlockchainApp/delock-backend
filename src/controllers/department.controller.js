@@ -1,5 +1,5 @@
 
-const { addDepartmentDetails, getAllDepartmentDetails, getDepartmentDetails } = require("../services/department.service");
+const { addDepartmentDetails, getAllDepartmentDetails, getDepartmentDetails,addAdminDetails,getAdmintDetails } = require("../services/department.service");
 
 
 
@@ -35,8 +35,34 @@ const getDepartment = async (req, res) => {
     }
 };
 
+const registerAdmin = async (req, res) => {
+    try {
+        const data = req.body;
+        const departmentData = await addAdminDetails(data);
+        return res.status(201).json({ message: "Department added successfully" });
+    } catch (error) {
+        console.error("Error in addDepartment:", error.message);
+        return res.status(500).json({ error: "An error occurred in the controller.", details: error.message });
+    }
+};
+
+const getAdmin = async (req, res) => {
+    try {
+        const address = req.query.address;
+        const departmentData = await getAdmintDetails(address);
+        return res.status(200).json( departmentData );
+    } catch (error) {
+        console.error("Error in getDepartment:", error.message);
+        return res.status(500).json({ error: "An error occurred in the controller.", details: error.message });
+    }
+}
+
+
+
 module.exports = {
     addDepartment,
     getAllDepartment,
-    getDepartment
+    getDepartment,
+    registerAdmin,
+    getAdmin
 };
