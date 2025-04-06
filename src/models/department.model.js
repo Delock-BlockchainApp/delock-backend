@@ -1,38 +1,35 @@
 const mongoose = require('mongoose');
 const departmentSchema = new mongoose.Schema({
-   
     department_name: {
         type: String,
         required: true 
-      },
-    issued_state:{
-        type: String,
     },
-    department_description:{
+    state: {
         type: String,
         required: true
     },
-    department_url:{
+    department_description: {
         type: String,
         required: true
     },
-    department_type:{
+    department_url: {
+        type: String,
+    },
+    department_code: {
         type: String,
         required: true
     },
-    issued_govt:{
-        type: String,
-        required: true
-    },
-    department_code:{
-        type: String,
-        required: true
-    },
-    documents_issued:{
-        type:Array,
-    }
-
-    });
+    documents: [{
+        document_id: {
+            type: String,
+            required: true
+        },
+        document_name: {
+            type: String,
+            required: true
+        }
+    }]
+});
       
 const Department = mongoose.model('department', departmentSchema);
 module.exports = Department;
