@@ -2,7 +2,6 @@
 <html>
 <head>
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
-    <title><%= document_name %></title>
     <style>
         .main {
             width: 600px;
@@ -110,17 +109,17 @@
             align-items: center;
             justify-content: center;
         }
-        .bottom {
-            margin-top: 20px;
-            padding: 0px 20px;
-            font-size: 10px;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-            border-radius: 6px;
-        }
-        .bottom-text {
-            margin: 0;
-            font-size: 12px;
-        }
+        .bottom{
+        margin-top:20px ;
+        padding: 0px 20px 0px 20px;
+        font-size: 10px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        border-radius: 6px;
+       }
+       .bottom-text{
+        margin: 0;
+        font-size: 12px;
+       }
     </style>
 </head>
 <body>
@@ -129,10 +128,13 @@
             <img class="logo" src="http://localhost:3000/assets/ashoka_sthambham.png" alt="ashoka_sthambham">
             <div class="title">
                 <p class="title-main">GOVERNMENT OF INDIA</p>
-                <p class="title-sub">Resident Identity Record</p>
+                <p class="title-sub"><%= documentName %></p>
             </div>
         </div>
         <div class="content">
+            <div class="details list">
+                <h6><%= documentName %> Id </h6><h6 style="font-size: 20px;"><%= documentId %></h6>
+            </div>
             <div class="details">
                 <h6>Full Name</h6><h6><%= name %></h6>
             </div>

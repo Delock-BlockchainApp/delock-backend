@@ -3,7 +3,7 @@ const { generateAndUploadDL,generateAndUploadPancard,generateAndUploadSample,add
 const uploadDLTemplate = async (req, res) => {
     try {
         const ipfsData = await generateAndUploadDL(req);
-        return res.status(200).json({ message: "PDF generated and uploaded to Pinata",  ipfsData });
+        return res.status(200).json(ipfsData);
     } catch (error) {
         console.error("Error in uploadDLTemplate:", error.message);
         return res.status(500).json({ error: "An error occurred in the controller.", details: error.message });
@@ -12,7 +12,7 @@ const uploadDLTemplate = async (req, res) => {
 const uploadPancardTemplate = async (req, res) => {
     try {
         const ipfsData = await generateAndUploadPancard(req);
-        return res.status(200).json({ message: "PDF generated and uploaded to Pinata", ipfsData });
+        return res.status(200).json(ipfsData);
     } catch (error) {
         console.error("Error in uploadPancardTemplate:", error.message);
         return res.status(500).json({ error: "An error occurred in the controller.", details: error.message });
@@ -22,7 +22,7 @@ const uploadPancardTemplate = async (req, res) => {
 const uploadSampleTemplate = async (req, res) => {
     try {
         const ipfsData = await generateAndUploadSample(req);
-        return res.status(200).json({ message: "PDF generated and uploaded to Pinata", ipfsData });      
+        return res.status(200).json(ipfsData);      
 }
     catch (error) {
         console.error("Error in uploadSampleTemplate:", error.message);
