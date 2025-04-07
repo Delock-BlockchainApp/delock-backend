@@ -1,5 +1,5 @@
 
-const { addDepartmentDetails, getAllDepartmentDetails, getDepartmentDetails,addAdminDetails,getAdmintDetails } = require("../services/department.service");
+const { addDepartmentDetails, getAllDepartmentDetails, getFilterDepartmentDetails,addAdminDetails,getAdmintDetails,getDepartmentDetails } = require("../services/department.service");
 
 
 
@@ -24,10 +24,21 @@ const getAllDepartment = async (req, res) => {
     }
 };
 
-const getDepartment = async (req, res) => {
+const getFilterDepartment = async (req, res) => {
     try {
         const searchkey = req.query.searchkey;
-        const departmentData = await getDepartmentDetails(searchkey);
+        const departmentData = await getFilterDepartmentDetails(searchkey);
+        return res.status(200).json( departmentData );
+    } catch (error) {
+        console.error("Error in getDepartment:", error.message);
+        return res.status(500).json({ error: "An error occurred in the controller.", details: error.message });
+    }
+};
+
+const getDepartment = async (req, res) => {
+    try {
+        const departmentCode = req.params.departmentCode;
+        const departmentData = await getDepartmentDetails(departmentCode);
         return res.status(200).json( departmentData );
     } catch (error) {
         console.error("Error in getDepartment:", error.message);
@@ -37,6 +48,7 @@ const getDepartment = async (req, res) => {
 
 const registerAdmin = async (req, res) => {
     try {
+        
         const data = req.body;
         const departmentData = await addAdminDetails(data);
         return res.status(201).json({ message: "Department added successfully" });
@@ -48,8 +60,8 @@ const registerAdmin = async (req, res) => {
 
 const getAdmin = async (req, res) => {
     try {
-        const address = req.query.address;
-        const departmentData = await getAdmintDetails(address);
+        const account = req.params.account;
+        const departmentData = await getAdmintDetails(account);
         return res.status(200).json( departmentData );
     } catch (error) {
         console.error("Error in getDepartment:", error.message);
@@ -62,7 +74,9 @@ const getAdmin = async (req, res) => {
 module.exports = {
     addDepartment,
     getAllDepartment,
+    getDepartmentDetails,
     getDepartment,
+    getFilterDepartment,
     registerAdmin,
     getAdmin
 };

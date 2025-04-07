@@ -1,12 +1,10 @@
 const mongoose = require('mongoose');
 const documentCreationSchema = new mongoose.Schema({
-    department_code: {
-        type: String,
-        required: true 
-      },
     document_id:{
         type: String,
-        required: true
+        required: true,
+        unique: true,
+      
     },
     document_name:{
         type: String,

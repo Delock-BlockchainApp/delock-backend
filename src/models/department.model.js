@@ -15,7 +15,7 @@ const departmentSchema = new mongoose.Schema({
     department_url: {
         type: String,
     },
-    department_code: {
+    department_id: {
         type: String,
         required: true
     },

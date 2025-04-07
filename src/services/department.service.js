@@ -22,8 +22,8 @@ const getAllDepartmentDetails = async () => {
         throw new Error("An error occurred while fetching the departments.");
     }
 }
-
-const getDepartmentDetails = async (searchkey) => {
+``
+const getFilterDepartmentDetails = async (searchkey) => {
     try {
         let query = {};
         if (searchkey) {
@@ -31,7 +31,7 @@ const getDepartmentDetails = async (searchkey) => {
                 $or: [
                     { state: { $regex: searchkey, $options: "i" } },
                     { department_name: { $regex: searchkey, $options: "i" } },
-                    { department_code: { $regex: searchkey, $options: "i" } },
+                    { department_id: { $regex: searchkey, $options: "i" } },
                     {keyword: { $regex: searchkey, $options: "i" } }
                 ]
             };
@@ -44,6 +44,17 @@ const getDepartmentDetails = async (searchkey) => {
     }
 };
 
+const getDepartmentDetails = async (departmentCode) => {
+    try {
+        const department = await Department.findOne({ department_id: departmentCode });
+        return department;
+    } catch (error) {
+        console.error("Error in getDepartmentDetails:", error.message);
+        throw new Error("An error occurred while fetching the departments.");
+    }
+};
+
+
 const addAdminDetails = async (data) => {
     try {
         const department = new Admin(data);
@@ -55,9 +66,10 @@ const addAdminDetails = async (data) => {
     }
 }
 
-const getAdmintDetails = async (address) => {
+const getAdmintDetails = async (account) => {
     try {
-        const department = await Admin.findOne({ wallet_address: address });
+        
+        const department = await Admin.findOne({ wallet_address: account });
         return department;
     } catch (error) {
         console.error("Error in getDepartmentDetails:", error.message);
@@ -69,6 +81,7 @@ module.exports = {
     addDepartmentDetails,
     getAllDepartmentDetails,
     getDepartmentDetails,
+    getFilterDepartmentDetails,
     addAdminDetails,
     getAdmintDetails
 };
