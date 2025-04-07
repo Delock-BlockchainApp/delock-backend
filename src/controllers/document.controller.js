@@ -1,4 +1,4 @@
-const { generateAndUploadDL,generateAndUploadPancard,addDocumentSchemaDetails,getDocumentSchemaDetails,getDocumentsDetails } = require("../services/document.service");
+const { generateAndUploadDL,generateAndUploadPancard,generateAndUploadSample,addDocumentSchemaDetails,getDocumentSchemaDetails,getDocumentsDetails } = require("../services/document.service");
 
 const uploadDLTemplate = async (req, res) => {
     try {
@@ -17,6 +17,17 @@ const uploadPancardTemplate = async (req, res) => {
         console.error("Error in uploadPancardTemplate:", error.message);
         return res.status(500).json({ error: "An error occurred in the controller.", details: error.message });
     }
+};
+
+const uploadSampleTemplate = async (req, res) => {
+    try {
+        const ipfsData = await generateAndUploadSample(req);
+        return res.status(200).json({ message: "PDF generated and uploaded to Pinata", ipfsData });      
+}
+    catch (error) {
+        console.error("Error in uploadSampleTemplate:", error.message);
+        return res.status(500).json({ error: "An error occurred in the controller.", details: error.message });
+    }       
 };
 
 const registerDocumentSchema = async (req, res) => {
@@ -79,6 +90,7 @@ const getDocuments = async (req, res) => {
 module.exports = {
     uploadDLTemplate,
     uploadPancardTemplate,
+    uploadSampleTemplate,
     registerDocumentSchema,
     getDocumentSchema,
     getDocuments

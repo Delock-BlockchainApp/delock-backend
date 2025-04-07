@@ -94,6 +94,43 @@ const generateAndUploadPancard = async (req) => {
     }
 }
 
+const generateAndUploadSample = async (req) => {
+    try {
+        const data = req.body; // Sample data
+
+        const template = fs.readFileSync("src/templates/template3.ejs", "utf-8");
+        const bufferData = await templateToPdf(template, data);
+        const bufferToStream = (buffer) => {
+            const stream = new Readable();
+            stream.push(buffer);
+            stream.push(null); // Signals end of stream
+            return stream;
+        };
+        const formData = new FormData();
+        formData.append("file", bufferToStream(bufferData), `${data.name}_sample.pdf`);
+
+        // Step 4: Upload PDF to Pinata using Axios
+        const response = await axios.post(Url, formData, {
+            headers: {
+                Authorization: `Bearer ${jwtToken}`, // Add your JWT token here
+            },
+        });
+
+        const responseData = response.data;
+        console.log("Pinata response:", responseData);
+
+        //const ipfsUrl = `https://gateway.pinata.cloud/ipfs/${responseData.IpfsHash}`;
+        return responseData; // Return the IPFS URL
+    } catch (error) {
+        console.error("Error in generateAndUploadSample:", error.message);
+        if (error.response) {
+            console.error("Response data:", error.response.data);
+            console.error("Response status:", error.response.status);
+        }
+        throw new Error("An error occurred during PDF generation or upload.");
+    }
+}
+
 const addDocumentSchemaDetails = async (data) => {
     try {
         const { department_code, document_id, document_name, document_schema } = data;
@@ -134,6 +171,7 @@ const getDocumentsDetails = async (departmentId) => {
 module.exports = {
     generateAndUploadDL,
     generateAndUploadPancard,
+    generateAndUploadSample,
     addDocumentSchemaDetails,
     getDocumentSchemaDetails,
     getDocumentsDetails
