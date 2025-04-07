@@ -1,3 +1,4 @@
+
 const mongoose = require('mongoose');
 const ipfsCredentialSchema = new mongoose.Schema({
     user_id: {
@@ -13,7 +14,16 @@ const ipfsCredentialSchema = new mongoose.Schema({
     api_key:{
         type: String,
         required: true
+    },
+    jwt_secret:{
+        type: String,
+        required: true
+    },
+    jwt_token:{
+        type: String,
+        required: true
     }
+
     });
       
 const Ipfs= mongoose.model('ipfscredential', ipfsCredentialSchema);
