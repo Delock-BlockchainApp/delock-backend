@@ -40,17 +40,17 @@ const registerYourdocFolder = async (req, res) => {
 const registerYourdocDocument = async (req, res) => {
     try {
       const folderId = req.params.folderId;
-      const { document_name, user_id } = req.body;
+      const { document_name, user_id,jwt_token } = req.body;
   
       if (!folderId) {
         return res.status(400).json({ message: "folderId is required" });
       }
-      if (!req.body || !req.file || !document_name || !user_id) {
+      if (!jwt_token || !req.file || !document_name || !user_id) {
         return res.status(400).json({
-          message: "file, document_name, and user_id are required.",
+          message: "file, document_name, and user_id , Api credentils are required.",
         });
     }
-    const ipfsHash=await uploadToPinata(req.file,document_name);
+    const ipfsHash=await uploadToPinata(req.file,document_name,jwt_token);
     if (!ipfsHash) {
         return res.status(500).json({ message: "Failed to upload file to IPFS" });
     }

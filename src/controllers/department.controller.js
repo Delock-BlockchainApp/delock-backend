@@ -48,9 +48,9 @@ const getDepartment = async (req, res) => {
 
 const registerAdmin = async (req, res) => {
     try {
-        
+        const account = req.params.account;
         const data = req.body;
-        const departmentData = await addAdminDetails(data);
+        const departmentData = await addAdminDetails({...data,wallet_address:account});
         return res.status(201).json({ message: "Department added successfully" });
     } catch (error) {
         console.error("Error in addDepartment:", error.message);

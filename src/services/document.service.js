@@ -7,6 +7,7 @@ const { Readable } = require("stream");
 const jwtToken = process.env.PINATA_JWT_TOKEN; // Your Pinata JWT token
 const Url = "https://api.pinata.cloud/pinning/pinFileToIPFS"; // Pinata API URL
 const DocumentSchema = require("../models/documentCreation.model"); // Import your Mongoose model
+const Document = require("../models/document.model"); // Import your Mongoose model
 
 const templateToPdf = async (template,data) => {
     const html = ejs.render(template, data);
@@ -120,10 +121,21 @@ const getDocumentSchemaDetails = async (documentId) => {
     }
 }
 
+const getDocumentsDetails = async (departmentId) => {
+    try {
+        const documents = await Document.find({ department_id: departmentId });
+        return documents;
+    } catch (error) {
+        console.error("Error in getDocumentsDetails:", error.message);
+        throw new Error("An error occurred while retrieving documents.");
+    }
+}
+
 module.exports = {
     generateAndUploadDL,
     generateAndUploadPancard,
     addDocumentSchemaDetails,
-    getDocumentSchemaDetails
+    getDocumentSchemaDetails,
+    getDocumentsDetails
     
 };

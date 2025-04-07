@@ -4,7 +4,6 @@ const YourdocFolder= require("../models/yourdocfolder.model");
 const YourdocDocument = require("../models/yourdocument.model");
 const FormData = require("form-data");
 const PINATA_URL = process.env.PINATA_URL; // Pinata API URL
-const jwtToken = process.env.PINATA_JWT_TOKEN; // Your Pinata JWT token
 const axios = require("axios");
 
 const registerUserDetails = async (data) => {
@@ -99,8 +98,8 @@ const getUserDetails = async (address) => {
     }  
 }
 const fs = require("fs");
-const { console } = require("inspector");
-const uploadToPinata = async (file,filename) => {
+
+const uploadToPinata = async (file,filename,jwt_token) => {
     try {
        
         const formData = new FormData();
@@ -109,7 +108,7 @@ const uploadToPinata = async (file,filename) => {
         const response = await axios.post(PINATA_URL, formData, {
             headers: {
                 ...formData.getHeaders(),
-                Authorization: `Bearer ${jwtToken}`,
+                Authorization: `Bearer ${jwt_token}`,
             },
         });
         fs.unlinkSync(file.path);
