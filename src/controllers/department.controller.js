@@ -1,5 +1,5 @@
 
-const { addDepartmentDetails, getAllDepartmentDetails, getFilterDepartmentDetails,addAdminDetails,getAdmintDetails,getDepartmentDetails } = require("../services/department.service");
+const { addDepartmentDetails, getAllDepartmentDetails, getFilterDepartmentDetails,addAdminDetails,getAdmintDetails,getDepartmentDetails,getAdminOverviewDetails } = require("../services/department.service");
 
 
 
@@ -69,6 +69,17 @@ const getAdmin = async (req, res) => {
     }
 }
 
+const getAdminOverview = async (req, res) => {
+    try {
+       
+        const departmentData = await getAdminOverviewDetails();
+        return res.status(200).json( departmentData );
+    } catch (error) {
+        console.error("Error in getDepartment:", error.message);
+        return res.status(500).json({ error: "An error occurred in the controller.", details: error.message });
+    }
+};
+
 
 
 module.exports = {
@@ -78,5 +89,6 @@ module.exports = {
     getDepartment,
     getFilterDepartment,
     registerAdmin,
-    getAdmin
+    getAdmin,
+    getAdminOverview
 };
