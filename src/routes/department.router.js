@@ -7,7 +7,7 @@ router.route('/').post(addDepartment)
 router.route('/:departmentCode').get(getDepartment);
 router.get('/all',getAllDepartment);
 router.route('/admin/:account').post(registerAdmin).get(getAdmin);
-router.route('/admin/count').get(getAdminOverview);
+router.route('/all/count').get(getAdminOverview);
 // router.post('/schema/',);
 
 module.exports = router;

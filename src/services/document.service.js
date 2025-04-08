@@ -107,7 +107,7 @@ const generateAndUploadSample = async (req) => {
             return stream;
         };
         const formData = new FormData();
-        formData.append("file", bufferToStream(bufferData), `${data.name}_sample.pdf`);
+        formData.append("file", bufferToStream(bufferData), `${data.name}_${data.documentName}.pdf`);
 
         // Step 4: Upload PDF to Pinata using Axios
         const response = await axios.post(Url, formData, {

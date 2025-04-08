@@ -81,13 +81,14 @@ const getAdmintDetails = async (account) => {
 
 const getAdminOverviewDetails = async () => {
     try {
-        const departmentsCount= await Department.countDocuments();
-        const userCount = await User.countDocuments();
-        const documents= await Document.countDocuments();
+        // console.log("Fetching admin overview details...");
+        const departmentsCount= await Department.countDocuments({});
+        const userCount = await User.countDocuments({});
+        const documentsCount= await Document.countDocuments({});
         return {
             departmentsCount,
             userCount,
-            documents,
+            documentsCount,
         };
     } catch (error) {
         console.error("Error in getDepartmentDetails:", error.message);

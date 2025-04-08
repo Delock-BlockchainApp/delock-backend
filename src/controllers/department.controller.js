@@ -69,9 +69,9 @@ const getAdmin = async (req, res) => {
     }
 }
 
-const getAdminOverview = async (req, res) => {
+const getAdminOverview = async (req,res) => {
     try {
-       
+    //    console.log("getAdminOverview called")
         const departmentData = await getAdminOverviewDetails();
         return res.status(200).json( departmentData );
     } catch (error) {
